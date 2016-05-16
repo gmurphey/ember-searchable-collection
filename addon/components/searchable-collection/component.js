@@ -18,6 +18,10 @@ export default Ember.Component.extend({
     let collection = get(this, 'collection');
     let searchableProperties = get(this, 'searchableProperties');
 
+    if (isEmpty(query)) {
+      return collection;
+    }
+
     return collection.filter((item) => {
       if (!isEmpty(searchableProperties)) {
         return searchableProperties.some((prop) => {

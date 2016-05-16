@@ -1,6 +1,50 @@
-# Searchable-collection
+# ember-searchable-collection
 
-This README outlines the details of collaborating on this Ember addon.
+The `searchable-collection` component offers simple search functionality with a minimal, flexible UI.
+
+**NOTE**: the `searchable-collection` component uses contextual components, and requires Ember 2.3 or higher.
+
+```hbs
+{{#searchable-collection collection=(array "apples" "oranges" "bananas") as |search|}}
+  <p>
+    {{!-- search input --}}
+    {{search.field}}
+  </p>
+
+  <p>
+  {{#each search.results as |fruit|}}
+    {{fruit}}<br>
+  {{/each}}
+  </p>
+{{/searchable-collection}}
+```
+
+For more complex collection members, we're able to define which properties are queryable using the `searchableProperties` property:
+
+```hbs
+{{#searchable-collection
+  searchableProperties=(array "name" "opinion")
+  collection=(array
+    (hash
+      name="apples"
+      opinion="good"
+    )
+    (hash
+      name="oranges"
+      opinion="awesome"
+    )
+    (hash
+      name="bananas"
+      opinion="meh"
+    )
+  )
+as |search|}}
+  {{search.field}}
+
+  {{#each search.results as |fruit|}}
+    {{fruit.name}} ({{fruit.opinion}})
+  {{/each}}
+{{/searchable-collection}}
 
 ## Installation
 

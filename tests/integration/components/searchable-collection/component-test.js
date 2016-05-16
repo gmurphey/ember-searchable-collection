@@ -24,6 +24,21 @@ test('it renders a default state', function(assert) {
   assert.equal(this.$('ul li').length, 3);
 });
 
+test('it can have zero results', function(assert) {
+  this.render(hbs`
+    {{#searchable-collection query="kirby" collection=(array "apples" "bananas" "oranges") as |search|}}
+      {{search.field}}
+
+      {{#unless search.results}}
+        <p>No results.</p>
+      {{/unless}}
+    {{/searchable-collection}}
+  `);
+
+  assert.equal(this.$('input').val(), 'kirby');
+  assert.equal(this.$('p').text().trim(), 'No results.');
+});
+
 test('it renders a searching state', function(assert) {
   this.render(hbs`
     {{#searchable-collection query="apples" collection=(array "apples" "bananas" "oranges") as |search|}}

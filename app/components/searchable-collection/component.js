@@ -1,1 +1,1 @@
-export { default } from 'searchable-collection/components/searchable-collection/component';
+export { default } from 'ember-searchable-collection/components/searchable-collection/component';

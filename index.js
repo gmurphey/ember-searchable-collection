@@ -2,5 +2,5 @@
 'use strict';
 
 module.exports = {
-  name: 'searchable-collection'
+  name: 'ember-searchable-collection'
 };
