@@ -141,3 +141,33 @@ test('searchableProperties can be an array of synchronous props', function(asser
   assert.equal(this.$('ul li').length, 1);
   assert.equal(this.$('ul li').text().trim(), 'oranges (awesome)');
 });
+
+test('it can accept a custom search action', function(assert) {
+  assert.expect(4);
+
+  this.on('search', function(query, collection, props) {
+    assert.equal(query, 'kirby');
+    assert.deepEqual(collection, ['apples', 'bananas', 'oranges']);
+    assert.deepEqual(props, []);
+
+    return collection.slice(0, 2);
+  });
+
+  this.render(hbs `
+    {{#searchable-collection
+      search=(action "search")
+      query="kirby"
+      collection=(array "apples" "bananas" "oranges")
+    as |search|}}
+      {{search.field}}
+
+      <ul>
+        {{#each search.results as |result|}}
+        <li>{{result}}</li>
+        {{/each}}
+      </ul>
+    {{/searchable-collection}}
+  `);
+
+  assert.equal(this.$('ul li').length, 2);
+});

@@ -45,6 +45,7 @@ as |search|}}
     {{fruit.name}} ({{fruit.opinion}})
   {{/each}}
 {{/searchable-collection}}
+```
 
 ## Installation
 
