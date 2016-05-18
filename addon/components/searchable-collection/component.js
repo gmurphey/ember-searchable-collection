@@ -7,7 +7,21 @@ const {
   isEmpty
 } = Ember;
 
-const defaultSearch = function(query, collection, searchableProperties) {
+const defaultSearch = function(query, collection, searchableProperties, matchCase) {
+  let testValue = function(value, matchCase) {
+    value = String(value);
+
+    if (!matchCase) {
+      value = value.toLowerCase();
+    }
+
+    return (value.indexOf(query) !== -1);
+  };
+
+  if (!matchCase) {
+    query = query.toLowerCase();
+  }
+
   if (isEmpty(query)) {
     return collection;
   }
@@ -15,10 +29,10 @@ const defaultSearch = function(query, collection, searchableProperties) {
   return collection.filter((item) => {
     if (!isEmpty(searchableProperties)) {
       return searchableProperties.some((prop) => {
-        return (String(get(item, prop)).indexOf(query) !== -1);
+        return testValue(get(item, prop), matchCase);
       });
     } else {
-      return (String(item).indexOf(query) !== -1);
+      return testValue(item, matchCase);
     }
   });
 };
@@ -28,13 +42,15 @@ export default Ember.Component.extend({
   collection: [],
   searchableProperties: [],
   query: '',
+  matchCase: false,
 
-  filteredCollection: computed('query', 'collection.[]', 'searchableProperties.[]', function() {
+  filteredCollection: computed('query', 'collection.[]', 'searchableProperties.[]', 'matchCase', function() {
     let query = get(this, 'query');
     let collection = get(this, 'collection');
     let searchableProperties = get(this, 'searchableProperties');
+    let matchCase = get(this, 'matchCase');
     let search = get(this, 'search') || defaultSearch;
 
-    return search(query, collection, searchableProperties);
+    return search(query, collection, searchableProperties, matchCase);
   })
 });

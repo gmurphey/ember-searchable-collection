@@ -41,7 +41,7 @@ test('it can have zero results', function(assert) {
 
 test('it renders a searching state', function(assert) {
   this.render(hbs`
-    {{#searchable-collection query="apples" collection=(array "apples" "bananas" "oranges") as |search|}}
+    {{#searchable-collection query="Apples" collection=(array "apples" "bananas" "oranges") as |search|}}
       {{search.field}}
 
       {{#if search.results}}
@@ -54,14 +54,14 @@ test('it renders a searching state', function(assert) {
     {{/searchable-collection}}
   `);
 
-  assert.equal(this.$('input').val(), 'apples');
+  assert.equal(this.$('input').val(), 'Apples');
   assert.equal(this.$('ul li').length, 1);
   assert.equal(this.$('ul li:eq(0)').text().trim(), 'apples');
 });
 
 test('the results can match partial queries', function(assert) {
   this.render(hbs`
-    {{#searchable-collection query="ges" collection=(array "apples" "bananas" "oranges") as |search|}}
+    {{#searchable-collection query="GES" collection=(array "apples" "bananas" "oranges") as |search|}}
       {{search.field}}
 
       {{#if search.results}}
@@ -76,6 +76,27 @@ test('the results can match partial queries', function(assert) {
 
   assert.equal(this.$('ul li').length, 1);
   assert.equal(this.$('ul li:eq(0)').text().trim(), 'oranges');
+});
+
+test('the results can be forced to match the case of the query', function(assert) {
+  this.render(hbs`
+    {{#searchable-collection query="GES" collection=(array "apples" "bananas" "oranges") matchCase=true as |search|}}
+      {{search.field}}
+
+      {{#if search.results}}
+        <ul>
+          {{#each search.results as |result|}}
+            <li>{{result}}</li>
+          {{/each}}
+        </ul>
+      {{else}}
+        <p>No results.</p>
+      {{/if}}
+    {{/searchable-collection}}
+  `);
+
+  assert.equal(this.$('ul li').length, 0);
+  assert.equal(this.$('p').text().trim(), 'No results.');
 });
 
 test('the results change when the query changes', function(assert) {
