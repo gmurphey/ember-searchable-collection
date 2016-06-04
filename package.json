@@ -1,6 +1,6 @@
 {
   "name": "ember-searchable-collection",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Simple search component with minimal UI",
   "directories": {
     "doc": "doc",
