@@ -1,5 +1,7 @@
 # ember-searchable-collection
 
+[![Build Status](https://travis-ci.org/gmurphey/ember-searchable-collection.svg?branch=master)](https://travis-ci.org/gmurphey/ember-searchable-collection)
+
 The `searchable-collection` component offers simple search functionality with a minimal, flexible UI.
 
 **NOTE**: the `searchable-collection` component uses contextual components, and requires Ember 2.3 or higher.
