@@ -7,7 +7,7 @@ const {
   isEmpty
 } = Ember;
 
-const defaultSearch = function(query, collection, searchableProperties, matchCase) {
+const search = function(query, collection, searchableProperties, matchCase) {
   let testValue = function(value, matchCase) {
     value = String(value);
 
@@ -37,7 +37,7 @@ const defaultSearch = function(query, collection, searchableProperties, matchCas
   });
 };
 
-export default Ember.Component.extend({
+let searchableCollection = Ember.Component.extend({
   layout,
   collection: [],
   searchableProperties: [],
@@ -49,8 +49,13 @@ export default Ember.Component.extend({
     let collection = get(this, 'collection');
     let searchableProperties = get(this, 'searchableProperties');
     let matchCase = get(this, 'matchCase');
-    let search = get(this, 'search') || defaultSearch;
 
     return search(query, collection, searchableProperties, matchCase);
   })
 });
+
+searchableCollection.reopenClass({
+  positionalParams: ['collection']
+});
+
+export default searchableCollection;

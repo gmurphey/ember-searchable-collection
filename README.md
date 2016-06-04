@@ -5,7 +5,7 @@ The `searchable-collection` component offers simple search functionality with a 
 **NOTE**: the `searchable-collection` component uses contextual components, and requires Ember 2.3 or higher.
 
 ```hbs
-{{#searchable-collection collection=(array "apples" "oranges" "bananas") as |search|}}
+{{#searchable-collection (array "apples" "oranges" "bananas") as |search|}}
   <p>
     {{!-- search input --}}
     {{search.field}}
@@ -23,8 +23,7 @@ For more complex collection members, we're able to define which properties are q
 
 ```hbs
 {{#searchable-collection
-  searchableProperties=(array "name" "opinion")
-  collection=(array
+  (array
     (hash
       name="apples"
       opinion="good"
@@ -38,6 +37,7 @@ For more complex collection members, we're able to define which properties are q
       opinion="meh"
     )
   )
+  searchableProperties=(array "name" "opinion")
 as |search|}}
   {{search.field}}
 

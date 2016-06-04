@@ -7,7 +7,7 @@ moduleForComponent('searchable-collection', 'Integration | Component | searchabl
 
 test('it renders a default state', function(assert) {
   this.render(hbs`
-    {{#searchable-collection collection=(array "apples" "bananas" "oranges") as |search|}}
+    {{#searchable-collection (array "apples" "bananas" "oranges") as |search|}}
       {{search.field}}
 
       {{#if search.results}}
@@ -26,7 +26,7 @@ test('it renders a default state', function(assert) {
 
 test('it can have zero results', function(assert) {
   this.render(hbs`
-    {{#searchable-collection query="kirby" collection=(array "apples" "bananas" "oranges") as |search|}}
+    {{#searchable-collection (array "apples" "bananas" "oranges") query="kirby" as |search|}}
       {{search.field}}
 
       {{#unless search.results}}
@@ -41,7 +41,7 @@ test('it can have zero results', function(assert) {
 
 test('it renders a searching state', function(assert) {
   this.render(hbs`
-    {{#searchable-collection query="Apples" collection=(array "apples" "bananas" "oranges") as |search|}}
+    {{#searchable-collection (array "apples" "bananas" "oranges") query="Apples" as |search|}}
       {{search.field}}
 
       {{#if search.results}}
@@ -80,7 +80,7 @@ test('the results can match partial queries', function(assert) {
 
 test('the results can be forced to match the case of the query', function(assert) {
   this.render(hbs`
-    {{#searchable-collection query="GES" collection=(array "apples" "bananas" "oranges") matchCase=true as |search|}}
+    {{#searchable-collection (array "apples" "bananas" "oranges") query="GES" matchCase=true as |search|}}
       {{search.field}}
 
       {{#if search.results}}
@@ -101,7 +101,7 @@ test('the results can be forced to match the case of the query', function(assert
 
 test('the results change when the query changes', function(assert) {
   this.render(hbs`
-    {{#searchable-collection query="apples" collection=(array "apples" "bananas" "oranges") as |search|}}
+    {{#searchable-collection (array "apples" "bananas" "oranges") query="apples" as |search|}}
       {{search.field}}
 
       {{#if search.results}}
@@ -127,8 +127,7 @@ test('the results change when the query changes', function(assert) {
 test('searchableProperties can be an array of synchronous props', function(assert) {
   this.render(hbs`
     {{#searchable-collection
-      query="apples"
-      collection=(array
+      (array
         (hash
           name="apples"
           opinion="okay")
@@ -139,6 +138,7 @@ test('searchableProperties can be an array of synchronous props', function(asser
           name="oranges"
           opinion="awesome")
       )
+      query="apples"
       searchableProperties=(array "name" "opinion")
     as |search|}}
       {{search.field}}
@@ -161,34 +161,4 @@ test('searchableProperties can be an array of synchronous props', function(asser
 
   assert.equal(this.$('ul li').length, 1);
   assert.equal(this.$('ul li').text().trim(), 'oranges (awesome)');
-});
-
-test('it can accept a custom search action', function(assert) {
-  assert.expect(4);
-
-  this.on('search', function(query, collection, props) {
-    assert.equal(query, 'kirby');
-    assert.deepEqual(collection, ['apples', 'bananas', 'oranges']);
-    assert.deepEqual(props, []);
-
-    return collection.slice(0, 2);
-  });
-
-  this.render(hbs `
-    {{#searchable-collection
-      search=(action "search")
-      query="kirby"
-      collection=(array "apples" "bananas" "oranges")
-    as |search|}}
-      {{search.field}}
-
-      <ul>
-        {{#each search.results as |result|}}
-        <li>{{result}}</li>
-        {{/each}}
-      </ul>
-    {{/searchable-collection}}
-  `);
-
-  assert.equal(this.$('ul li').length, 2);
 });
