@@ -6,8 +6,16 @@ The `searchable-collection` component offers simple search functionality with a 
 
 **NOTE**: the `searchable-collection` component uses contextual components, and requires Ember 2.3 or higher.
 
+```javascript
+import Ember from 'ember';
+
+export default Ember.Component.extend({
+  fruits: Ember.A(['apples', 'oranges', 'bananas']);
+});
+```
+
 ```hbs
-{{#searchable-collection (array "apples" "oranges" "bananas") as |search|}}
+{{#searchable-collection fruits as |search|}}
   <p>
     {{!-- search input --}}
     {{search.field}}
@@ -23,29 +31,34 @@ The `searchable-collection` component offers simple search functionality with a 
 
 For more complex collection members, we're able to define which properties are queryable using the `searchableProperties` property:
 
+```javascript
+import Ember from 'ember';
+
+export default Ember.Component.extend({
+  fruits: Ember.A([{
+    name: 'apples',
+    opinion: 'good'
+  }, {
+    name: 'oranges',
+    opinion: 'awesome'
+  }, {
+    name: 'bananas',
+    opinion: 'meh'
+  }]),
+
+  searchableProperties: Ember.A(['name', 'opinion'])
+});
+```
+
 ```hbs
-{{#searchable-collection
-  (array
-    (hash
-      name="apples"
-      opinion="good"
-    )
-    (hash
-      name="oranges"
-      opinion="awesome"
-    )
-    (hash
-      name="bananas"
-      opinion="meh"
-    )
-  )
-  searchableProperties=(array "name" "opinion")
-as |search|}}
+{{#searchable-collection fruits searchableProperties=searchableProperties as |search|}}
   {{search.field}}
 
+  <p>
   {{#each search.results as |fruit|}}
-    {{fruit.name}} ({{fruit.opinion}})
+    {{fruit.name}} ({{fruit.opinion}})<br>
   {{/each}}
+  </p>
 {{/searchable-collection}}
 ```
 
