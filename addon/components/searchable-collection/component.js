@@ -39,6 +39,7 @@ const search = function(query, collection, searchableProperties, matchCase) {
 
 let searchableCollection = Ember.Component.extend({
   layout,
+  tagName: '',
   collection: [],
   searchableProperties: [],
   query: '',
