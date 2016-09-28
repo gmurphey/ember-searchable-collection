@@ -3,6 +3,7 @@ import layout from './template';
 
 const {
   get,
+  set,
   computed,
   isEmpty
 } = Ember;
@@ -18,12 +19,12 @@ const search = function(query, collection, searchableProperties, matchCase) {
     return (value.indexOf(query) !== -1);
   };
 
-  if (!matchCase) {
-    query = query.toLowerCase();
-  }
-
   if (isEmpty(query)) {
     return collection;
+  }
+
+  if (!matchCase) {
+    query = query.toLowerCase();
   }
 
   return collection.filter((item) => {
@@ -40,8 +41,8 @@ const search = function(query, collection, searchableProperties, matchCase) {
 let searchableCollection = Ember.Component.extend({
   layout,
   tagName: '',
-  collection: [],
-  searchableProperties: [],
+  collection: Ember.A(),
+  searchableProperties: Ember.A(),
   query: '',
   matchCase: false,
 
@@ -52,7 +53,19 @@ let searchableCollection = Ember.Component.extend({
     let matchCase = get(this, 'matchCase');
 
     return search(query, collection, searchableProperties, matchCase);
-  })
+  }),
+
+  actions: {
+    update(value) {
+      let update = get(this, 'update');
+
+      if (update) {
+        update(value);
+      } else {
+        set(this, 'query', value);
+      }
+    }
+  }
 });
 
 searchableCollection.reopenClass({

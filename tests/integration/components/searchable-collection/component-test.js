@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
@@ -6,8 +7,10 @@ moduleForComponent('searchable-collection', 'Integration | Component | searchabl
 });
 
 test('it renders a default state', function(assert) {
+  this.set('collection', Ember.A(['apples', 'bananas', 'oranges']));
+
   this.render(hbs`
-    {{#searchable-collection (array "apples" "bananas" "oranges") as |search|}}
+    {{#searchable-collection collection as |search|}}
       {{search.field}}
 
       {{#if search.results}}
@@ -25,8 +28,10 @@ test('it renders a default state', function(assert) {
 });
 
 test('it can have zero results', function(assert) {
+  this.set('collection', Ember.A(['apples', 'bananas', 'oranges']));
+
   this.render(hbs`
-    {{#searchable-collection (array "apples" "bananas" "oranges") query="kirby" as |search|}}
+    {{#searchable-collection collection query="kirby" as |search|}}
       {{search.field}}
 
       {{#unless search.results}}
@@ -40,8 +45,10 @@ test('it can have zero results', function(assert) {
 });
 
 test('it renders a searching state', function(assert) {
+  this.set('collection', Ember.A(['apples', 'bananas', 'oranges']));
+
   this.render(hbs`
-    {{#searchable-collection (array "apples" "bananas" "oranges") query="Apples" as |search|}}
+    {{#searchable-collection collection query="Apples" as |search|}}
       {{search.field}}
 
       {{#if search.results}}
@@ -60,8 +67,10 @@ test('it renders a searching state', function(assert) {
 });
 
 test('the results can match partial queries', function(assert) {
+  this.set('collection', Ember.A(['apples', 'bananas', 'oranges']));
+
   this.render(hbs`
-    {{#searchable-collection query="GES" collection=(array "apples" "bananas" "oranges") as |search|}}
+    {{#searchable-collection collection query="GES" as |search|}}
       {{search.field}}
 
       {{#if search.results}}
@@ -79,8 +88,10 @@ test('the results can match partial queries', function(assert) {
 });
 
 test('the results can be forced to match the case of the query', function(assert) {
+  this.set('collection', Ember.A(['apples', 'bananas', 'oranges']));
+
   this.render(hbs`
-    {{#searchable-collection (array "apples" "bananas" "oranges") query="GES" matchCase=true as |search|}}
+    {{#searchable-collection collection query="GES" matchCase=true as |search|}}
       {{search.field}}
 
       {{#if search.results}}
@@ -100,8 +111,10 @@ test('the results can be forced to match the case of the query', function(assert
 });
 
 test('the results change when the query changes', function(assert) {
+  this.set('collection', Ember.A(['apples', 'bananas', 'oranges']));
+
   this.render(hbs`
-    {{#searchable-collection (array "apples" "bananas" "oranges") query="apples" as |search|}}
+    {{#searchable-collection collection query="apples" as |search|}}
       {{search.field}}
 
       {{#if search.results}}
@@ -125,22 +138,25 @@ test('the results change when the query changes', function(assert) {
 });
 
 test('searchableProperties can be an array of synchronous props', function(assert) {
+  this.set('collection', Ember.A([
+    {
+      name: "apples",
+      opinion: "okay"
+    },
+    {
+      name: "bananas",
+      opinion: "gross"
+    },
+    {
+      name: "oranges",
+      opinion: "awesome"
+    }
+  ]));
+
+  this.set('searchableProperties', Ember.A(['name', 'opinion']));
+
   this.render(hbs`
-    {{#searchable-collection
-      (array
-        (hash
-          name="apples"
-          opinion="okay")
-        (hash
-          name="bananas"
-          opinion="gross")
-        (hash
-          name="oranges"
-          opinion="awesome")
-      )
-      query="apples"
-      searchableProperties=(array "name" "opinion")
-    as |search|}}
+    {{#searchable-collection collection query="apples" searchableProperties=searchableProperties as |search|}}
       {{search.field}}
 
       {{#if search.results}}
