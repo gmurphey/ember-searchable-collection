@@ -1,4 +1,6 @@
 {{yield (hash
   field=(component "one-way-input" query update=(action 'update'))
+  query=query
+  action=(action 'update')
   results=filteredCollection
 )}}

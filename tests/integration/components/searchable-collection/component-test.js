@@ -178,3 +178,27 @@ test('searchableProperties can be an array of synchronous props', function(asser
   assert.equal(this.$('ul li').length, 1);
   assert.equal(this.$('ul li').text().trim(), 'oranges (awesome)');
 });
+
+test('a custom input can be provided', function(assert) {
+  this.set('collection', Ember.A(['apples', 'bananas', 'oranges']));
+
+  this.render(hbs`
+    {{#searchable-collection collection as |search|}}
+      {{one-way-input search.query update=search.action}}
+
+      {{#if search.results}}
+        <ul>
+          {{#each search.results as |result|}}
+            <li>{{result}}</li>
+          {{/each}}
+        </ul>
+      {{/if}}
+    {{/searchable-collection}}
+  `);
+
+  this.$('input').val('oranges');
+  this.$('input').trigger('change');
+
+  assert.equal(this.$('ul li').length, 1);
+  assert.equal(this.$('ul li').text().trim(), 'oranges');
+});
