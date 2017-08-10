@@ -2,7 +2,9 @@
 
 [![Build Status](https://travis-ci.org/gmurphey/ember-searchable-collection.svg?branch=master)](https://travis-ci.org/gmurphey/ember-searchable-collection)
 
-The `searchable-collection` component offers simple search functionality with a minimal, flexible UI.
+**This addon is deprecated.** TL;DR: You can use (ember-search-helper)[https://github.com/gmurphey/ember-search-helper] instead. Slightly longer version: users quickly encountered issues when this addon was so prescriptive about the input component used. I've re-written the functionality as a (helper)[https://github.com/gmurphey/ember-search-helper] that's hopefully a bit more flexible for your project.
+
+The `searchable-collection` component offers simple search functionality with a minimal UI.
 
 **NOTE**: the `searchable-collection` component uses contextual components, and requires Ember 2.3 or higher.
 
